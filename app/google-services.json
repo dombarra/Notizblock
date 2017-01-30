@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "233420170186",
+    "firebase_url": "https://android-apps-6a176.firebaseio.com",
+    "project_id": "android-apps-6a176",
+    "storage_bucket": "android-apps-6a176.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233420170186:android:68e9e1442b5485c7",
+        "android_client_info": {
+          "package_name": "eu.eurohardware24.diceduel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233420170186-f3u9tsud19nd79bq825qopt29lr3au9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC3WD_IPDAJiaBjMALzEpTIOS1HMsy2gE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233420170186:android:98d849b32ccc33b1",
+        "android_client_info": {
+          "package_name": "eu.eurohardware24.notizblock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233420170186-f40eme5at5nlt9o8puaakf35jv0i4us4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eu.eurohardware24.notizblock",
+            "certificate_hash": "ACA171273D2DC23A998F26C9C108FD28A89E7840"
+          }
+        },
+        {
+          "client_id": "233420170186-f3u9tsud19nd79bq825qopt29lr3au9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC3WD_IPDAJiaBjMALzEpTIOS1HMsy2gE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233420170186-f3u9tsud19nd79bq825qopt29lr3au9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

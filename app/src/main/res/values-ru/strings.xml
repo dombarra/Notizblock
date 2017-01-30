@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Блокнот</string>
+    <string name="clear">ясно</string>
+    <string name="leftnote">заметка:</string>
+    <string name="of">из</string>
+    <string name="options">опции:</string>
+    <string name="textsize">размер шрифта:</string>
+</resources>

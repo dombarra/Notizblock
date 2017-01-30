@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bloco de Notas</string>
+    <string name="clear">Claro</string>
+    <string name="leftnote">Nota:</string>
+    <string name="of">do</string>
+    <string name="options">Opções:</string>
+    <string name="textsize">Tamanho do texto:</string>
+</resources>

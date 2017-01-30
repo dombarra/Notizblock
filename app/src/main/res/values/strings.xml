@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Notepad</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-8124355001128596/3339556799</string>
+    <string name="clear">Clear</string>
+    <string name="options">Options:</string>
+    <string name="textsize">Textsize:</string>
+    <string name="leftnote">Note:</string>
+    <string name="of">of</string>
+</resources>

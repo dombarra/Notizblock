@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Not Defteri</string>
+    <string name="clear">açık</string>
+    <string name="leftnote">Not:</string>
+    <string name="of">Of</string>
+    <string name="options">Seçenekler:</string>
+    <string name="textsize">yazı Boyutu:</string>
+</resources>

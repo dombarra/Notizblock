@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notizblock</string>
+    <string name="clear">Löschen</string>
+    <string name="leftnote">Notiz:</string>
+    <string name="of">von</string>
+    <string name="options">Einstellungen:</string>
+    <string name="textsize">Textgröße:</string>
+</resources>
