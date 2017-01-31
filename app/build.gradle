@@ -7,7 +7,7 @@ android {
         applicationId "eu.eurohardware24.notizblock"
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 31
+        versionCode 32
         versionName "2.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

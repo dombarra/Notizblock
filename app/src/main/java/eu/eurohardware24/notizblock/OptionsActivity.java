@@ -1,10 +1,14 @@
 package eu.eurohardware24.notizblock;
 
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -59,6 +64,23 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
     static final String IAP_SKU4 = "eu.eurohardware24.notizblock.10morenotes";
     String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApKWlanclnIbiuPm2IQErIOzrtdd2lQXDw4PmflaZJtdXPPzFaN8yc0faE9ApFrDWjXA2eEfA0KAMAicE7CfRhpTHDckayEod7xqiHe4LjabRKiuN5OfUT6ypskoMeTz4xlv0ogcZvjLY0FkEwig+6iOg3weQgq9bReQTB2nxR+xsNT6JbOjF3GDvsa5LPcw9y60UKABqNaxak9UEHdT9y58iOUsvAcDtdl6VJEQKYG9MqgPmniaBQbBEQ2IPo+6ZJOrLMm/CEXN+gBCPtpFHHeyUazWFS1vXPx83CHDBphCAGUEwA1mhsKpErFnWyGemaxiuDd5O/Qcn53GIOU8ncQIDAQAB";
     IabHelper mHelper;
+
+    IInAppBillingService mService;
+
+    ServiceConnection mServiceConn = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name,
+                                       IBinder service) {
+            mService = IInAppBillingService.Stub.asInterface(service);
+        }
+    };
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -236,6 +258,12 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
 
+        Intent serviceIntent =
+                new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
+
+
         settings = getSharedPreferences(PREFS_NAME, 0);
         editor = settings.edit();
         noAds = settings.getBoolean("noAds", noAds);
@@ -277,7 +305,11 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (!(!noAds || !functions || !unlimitedNotes)){}
         else {
+
+
+
             // compute your public key and store it in base64EncodedPublicKey
+
             mHelper = new IabHelper(this, base64EncodedPublicKey);
 
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
@@ -297,6 +329,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     // Hooray, IAB is fully set up!
                 }
             });
+
         }
 
         interstitial = new InterstitialAd(this);
@@ -357,6 +390,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
 
 
     }
+
 
     public int textg(float a){
         int b = (int)a;
@@ -523,9 +557,11 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        if (mHelper != null)
+        if (mHelper != null){
             mHelper.dispose();
-        mHelper = null;
+        }
+
+
     }
 
     public void displayInterstitial() {
