@@ -1,11 +1,10 @@
 package eu.eurohardware24.notizblock;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -17,11 +16,10 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import static com.google.firebase.analytics.FirebaseAnalytics.*;
+import static com.google.firebase.analytics.FirebaseAnalytics.getInstance;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -60,6 +58,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String data = intent.getDataString();
+        if (Intent.ACTION_VIEW.equals(action) && data != null) {
+
+        }
+
         mFirebaseAnalytics = getInstance(this);
         adView = new AdView(this);
         adView.setAdUnitId(MY_BANNER_UNIT_ID);
@@ -76,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Load the adView with the ad request.
             adView.loadAd(adRequest);
         }
-
+        haupt = (LinearLayout)findViewById(R.id.noteLayout);
+        haupt.setOnClickListener(this);
         interstitial = new InterstitialAd(this);
         interstitial.setAdUnitId(MY_INTERSTITIAL_UNIT_ID);
         AdRequest Request = new AdRequest.Builder().build();

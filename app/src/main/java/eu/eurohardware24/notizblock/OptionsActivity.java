@@ -100,6 +100,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         public void onQueryInventoryFinished(IabResult result,
                                              Inventory inventory) {
 
+
             if (result.isFailure()) {
                 // handle error here
             }
@@ -243,7 +244,9 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
             }
             */
             try {
-                mHelper.queryInventoryAsync(mGotInventoryListener);
+
+                queryPurchasedItems();
+
             }
             catch(IllegalStateException ex){ //ADDED THIS CATCH
                 result = new IabResult(6, "Helper is not setup.");
@@ -303,8 +306,8 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
             // Load the adView with the ad request.
             adView.loadAd(adRequest);
         }
-        if (!(!noAds || !functions || !unlimitedNotes)){}
-        else {
+        //if (noAds && functions && unlimitedNotes){}
+       // else {
 
 
 
@@ -323,14 +326,17 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     additionalSkuList.add(IAP_SKU2);
                     additionalSkuList.add(IAP_SKU3);
                     //additionalSkuList.add(IAP_SKU4);
-                    mHelper.queryInventoryAsync(true, additionalSkuList,
-                            mQueryFinishedListener);
+                    if( !mHelper.isAsyncInProgress()) {
+                        mHelper.queryInventoryAsync(true, additionalSkuList,
+                                mQueryFinishedListener);
+                    }
+
 
                     // Hooray, IAB is fully set up!
                 }
             });
 
-        }
+      //  }
 
         interstitial = new InterstitialAd(this);
         interstitial.setAdUnitId(MY_INTERSTITIAL_UNIT_ID);
@@ -404,7 +410,9 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
             if (result.isFailure()) {
                 Log.d(TAG, "Error purchasing: " + result);
                 try {
-                    mHelper.queryInventoryAsync(mGotInventoryListener);
+
+                    queryPurchasedItems();
+
                 }
                 catch(IllegalStateException ex){ //ADDED THIS CATCH
                     result = new IabResult(6, "Helper is not setup.");
@@ -444,7 +452,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                 notes = 999999;
                 editor.putInt("notes", notes);
                 lnTextView.setText(""+lnote+ " "+ getString(R.string.of) +" "+ " ∞");
-                editor.putBoolean("functions", functions);
+                editor.putBoolean("unlimitedNotes", unlimitedNotes);
                 editor.commit();
                 // consume the gas and update the UI
             }
@@ -456,21 +464,28 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         // TODO Auto-generated method stub
 
         if (v == noAdsButton){
-            if (mHelper != null) mHelper.flagEndAsync();
-            mHelper.launchPurchaseFlow(this, IAP_SKU, 10001,
-                    mPurchaseFinishedListener, "IAP");
-
+            if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
+                mHelper.flagEndAsync();
+                mHelper.launchPurchaseFlow(this, IAP_SKU, 10001,
+                        mPurchaseFinishedListener, "IAP");
+            }
         }
 
         if (v == functionsButton){
             if (!functions){
-                if (mHelper != null) mHelper.flagEndAsync();
-                mHelper.launchPurchaseFlow(this, IAP_SKU2, 10001,
-                        mPurchaseFinishedListener, "IAP2");
+                if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()) {
+                    mHelper.flagEndAsync();
+                    mHelper.launchPurchaseFlow(this, IAP_SKU2, 10001,
+                            mPurchaseFinishedListener, "IAP2");
+                }
             }else {
-                if (mHelper != null) mHelper.flagEndAsync();
-                mHelper.launchPurchaseFlow(this, IAP_SKU3, 10001,
-                        mPurchaseFinishedListener, "IAP3");
+                if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
+                    mHelper.flagEndAsync();
+                    mHelper.launchPurchaseFlow(this, IAP_SKU3, 10001,
+                            mPurchaseFinishedListener, "IAP3");
+                }
+
+
             }
 
         }
@@ -568,6 +583,25 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         if (interstitial.isLoaded()) {
             interstitial.show();
         }
+    }
+
+    private void queryPurchasedItems() {
+        //check if user has bought "remove adds"
+        if(mHelper.isSetupDone() && !mHelper.isAsyncInProgress()) {
+            mHelper.queryInventoryAsync(mGotInventoryListener);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }
 
