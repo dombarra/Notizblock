@@ -17,13 +17,18 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import static com.google.firebase.analytics.FirebaseAnalytics.getInstance;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, RewardedVideoAdListener {
     private FirebaseAnalytics mFirebaseAnalytics;
     private AdView mAdView;
+    private RewardedVideoAd mAd;
 
     public static final String PREFS_NAME = "MyPrefsFile";
     EditText Text;
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int Hintergrund;
     LinearLayout haupt;
     int lz,tg;
+    int VideoWerbung = 0;
     long letzteWerbung, jetzt;
     ImageButton optionsButton, textminusbutton,textplusbutton;
     float textsize = 25;
@@ -50,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private InterstitialAd interstitial;
     AdRequest adRequest;
 
+
     InputMethodManager imm;
 
 
@@ -57,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobileAds.initialize(this, "ca-app-pub-8124355001128596");
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        loadRewardedVideoAd();
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -72,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adLayout = (LinearLayout) findViewById(R.id.adLayout);
         settings = getSharedPreferences(PREFS_NAME, 0);
         noAds = settings.getBoolean("noAds", noAds);
-        if (noAds){
+        if (noAds){adView.setVisibility(View.GONE);
         }else{
             adLayout.addView(adView);
 
@@ -126,6 +137,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         letzteWerbung = settings.getLong("letzteWerbung", letzteWerbung);
     }
 
+    private void loadRewardedVideoAd() {
+        mAd.loadAd(" ca-app-pub-8124355001128596/6382805990", new AdRequest.Builder().build());
+    }
+
+    @Override
+    public void onRewarded(RewardItem reward) {
+       VideoWerbung=1;
+        // Reward the user.
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
 
     public int textg(float a){
         int b = (int)a;
@@ -148,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause(){
         super.onPause();
+        mAd.pause(this);
         text = Text.getText().toString();
         settings = getSharedPreferences(PREFS_NAME, 0);
         editor = settings.edit();
@@ -162,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mAd.destroy(this);
         text = Text.getText().toString();
         settings = getSharedPreferences(PREFS_NAME, 0);
         editor = settings.edit();
@@ -175,10 +228,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
 
+    @Override
+    public void onResume() {
+        mAd.resume(this);
+        super.onResume();
+    }
 
     @Override
     public void onClick(View v) {
@@ -220,6 +277,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == clear){
             Text.setText("");
             imm.hideSoftInputFromWindow(Text.getWindowToken(), 0);
+        }
+        if (VideoWerbung == 0){
+            if (mAd.isLoaded()) {
+                mAd.show();
+            }
         }
 
         jetzt = System.currentTimeMillis();

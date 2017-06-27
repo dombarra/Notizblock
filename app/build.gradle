@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.firebase.firebase-perf'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "eu.eurohardware24.notizblock"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 25
-        versionCode 34
-        versionName "2.3.3"
+        versionCode 37
+        versionName "2.3.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -25,7 +25,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.google.firebase:firebase-perf:10.2.6'
     compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.google.android.gms:play-services-ads:10.2.6'
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-ads:10.0.1'
     compile 'com.google.firebase:firebase-crash:10.0.1'

@@ -31,8 +31,8 @@ import inappbilling.util.Purchase;
 
 public class OptionsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button textsizeplusButton, textsizeminusButton, lnplusButton,lnminusButton,noAdsButton,functionsButton;
-    TextView textsizeTextView, lnTextView, noAdsText, functionsText;
+    Button textsizeplusButton, textsizeminusButton, lnplusButton,lnminusButton,noAdsButton,functionsButton,functionsButton2,functionsButton3;
+    TextView textsizeTextView, lnTextView, noAdsText, functionsText, functionsText2, functionsText3;
     ImageButton back;
     Intent i = new Intent();
     float textsize = 25;
@@ -47,7 +47,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
     int lz;
     long letzteWerbung, jetzt;
     private AdView adView;
-    LinearLayout layout, noAdsLayout,functionsLayout;
+    LinearLayout layout, noAdsLayout,functionsLayout, functionsLayout2,functionsLayout3;
     private static final String MY_BANNER_UNIT_ID = "ca-app-pub-8124355001128596/3339556799";
     private static final String MY_INTERSTITIAL_UNIT_ID = "ca-app-pub-8124355001128596/1403745594";
     private InterstitialAd interstitial;
@@ -116,7 +116,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putBoolean("noAds", noAds);
                     editor.commit();
                     adView.setVisibility(View.GONE);
-
+                    noAdsLayout.setVisibility(View.GONE);
 
                 }
                 if (!IAPgekauft){
@@ -124,7 +124,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     noAds=false;
                     editor.putBoolean("noAds", noAds);
                     editor.commit();
-
+                    noAdsLayout.setVisibility(View.VISIBLE);
                 }
                 inventory.getPurchase(IAP_SKU2);
                 Boolean IAPgekauft2 = inventory.hasPurchase(IAP_SKU2);
@@ -132,7 +132,9 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                 if (IAPgekauft2){
                     editor = settings.edit();
                     functions=true;
-                    notes=3;
+                    if (notes < 3){
+                        notes=3;
+                    }
                     lnTextView.setText(""+lnote+ " "+ getString(R.string.of) +" "+ notes);
                     lnminusButton.setEnabled(true);
                     lnplusButton.setEnabled(true);
@@ -141,6 +143,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putBoolean("functions", functions);
                     editor.putInt("notes", notes);
                     editor.commit();
+                    functionsLayout.setVisibility(View.GONE);
 
                 }
                 if (!IAPgekauft2){
@@ -150,7 +153,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putInt("notes", notes);
                     editor.putBoolean("functions", functions);
                     editor.commit();
-
+                    functionsLayout.setVisibility(View.GONE);
                 }
 
                 inventory.getPurchase(IAP_SKU3);
@@ -165,19 +168,14 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putInt("notes",notes);
                     editor.putBoolean("unlimitedNotes", unlimitedNotes);
                     editor.commit();
-
+                    functionsLayout2.setVisibility(View.GONE);
                 }
                 if (!IAPgekauft3){
                     editor = settings.edit();
                     unlimitedNotes = false;
                     editor.putBoolean("unlimitedNotes", unlimitedNotes);
                     editor.commit();
-
-                }
-
-                if (noAds && unlimitedNotes){
-                    noAdsLayout.setVisibility(View.GONE);
-                    functionsLayout.setVisibility(View.GONE);
+                    functionsLayout.setVisibility(View.VISIBLE);
                 }
                 // update UI accordingly
             }
@@ -206,18 +204,18 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
             }
 
 
-            if (functions){
+
                 String IAPPrice3 =
                         inventory.getSkuDetails(IAP_SKU3).getPrice();
                 String IAPTitle3 =
                         inventory.getSkuDetails(IAP_SKU3).getTitle();
                 String IAPDescription3 = inventory.getSkuDetails(IAP_SKU3).getDescription();
 
-                functionsText.setText(IAPDescription3);
-                functionsText.setVisibility(View.VISIBLE);
-                functionsButton.setText(IAPTitle3 + " - "+ IAPPrice3);
-                functionsButton.setVisibility(View.VISIBLE);
-            }else {
+                functionsText2.setText(IAPDescription3);
+                functionsText2.setVisibility(View.VISIBLE);
+                functionsButton2.setText(IAPTitle3 + " - "+ IAPPrice3);
+                functionsButton2.setVisibility(View.VISIBLE);
+
                 String IAPPrice2 =
                         inventory.getSkuDetails(IAP_SKU2).getPrice();
                 String IAPTitle2 =
@@ -228,21 +226,20 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                 functionsText.setVisibility(View.VISIBLE);
                 functionsButton.setText(IAPTitle2 + " - "+ IAPPrice2);
                 functionsButton.setVisibility(View.VISIBLE);
-            }
-            /*
-            if (functions){
-                String IAPPrice4 =
-                        inventory.getSkuDetails(IAP_SKU4).getPrice();
-                String IAPTitle4 =
-                        inventory.getSkuDetails(IAP_SKU4).getTitle();
-                String IAPDescription4 = inventory.getSkuDetails(IAP_SKU4).getDescription();
 
-                noAdsText.setText(IAPDescription2);
-                noAdsText.setVisibility(View.VISIBLE);
-                noAdsButton.setText(IAPTitle2 + " - "+ IAPPrice2);
-                noAdsButton.setVisibility(View.VISIBLE);
-            }
-            */
+
+
+                    String IAPPrice4 =
+                            inventory.getSkuDetails(IAP_SKU4).getPrice();
+                    String IAPTitle4 =
+                            inventory.getSkuDetails(IAP_SKU4).getTitle();
+                    String IAPDescription4 = inventory.getSkuDetails(IAP_SKU4).getDescription();
+
+                    functionsText3.setText(IAPDescription4);
+                    functionsText3.setVisibility(View.VISIBLE);
+                    functionsButton3.setText(IAPTitle4 + " - "+ IAPPrice4);
+                    functionsButton3.setVisibility(View.VISIBLE);
+
             try {
 
                 queryPurchasedItems();
@@ -293,6 +290,17 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         functionsButton.setVisibility(View.GONE);
         functionsText = (TextView)findViewById(R.id.functionsText);
         functionsText.setVisibility(View.GONE);
+        functionsText2 = (TextView) findViewById(R.id.functionsText2);
+        functionsText2.setVisibility(View.GONE);
+        functionsButton2 = (Button)findViewById(R.id.functionsButton2);
+        functionsButton2.setOnClickListener(this);
+        functionsButton2.setVisibility(View.GONE);
+        functionsText.setVisibility(View.GONE);
+        functionsText3 = (TextView) findViewById(R.id.functionsText3);
+        functionsText3.setVisibility(View.GONE);
+        functionsButton3 = (Button)findViewById(R.id.functionsButton3);
+        functionsButton3.setOnClickListener(this);
+        functionsButton3.setVisibility(View.GONE);
 
         unlimitedNotes = settings.getBoolean("unlimitedNotes", unlimitedNotes);
 
@@ -325,7 +333,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     additionalSkuList.add(IAP_SKU);
                     additionalSkuList.add(IAP_SKU2);
                     additionalSkuList.add(IAP_SKU3);
-                    //additionalSkuList.add(IAP_SKU4);
+                    additionalSkuList.add(IAP_SKU4);
                     if( !mHelper.isAsyncInProgress()) {
                         mHelper.queryInventoryAsync(true, additionalSkuList,
                                 mQueryFinishedListener);
@@ -445,14 +453,22 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             else if (purchase.getSku().equals(IAP_SKU3)) {
-                noAdsLayout.setVisibility(View.GONE);
-                functionsLayout.setVisibility(View.GONE);
+                functionsLayout2.setVisibility(View.GONE);
                 editor = settings.edit();
                 unlimitedNotes = true;
                 notes = 999999;
                 editor.putInt("notes", notes);
                 lnTextView.setText(""+lnote+ " "+ getString(R.string.of) +" "+ " ∞");
                 editor.putBoolean("unlimitedNotes", unlimitedNotes);
+                editor.commit();
+                // consume the gas and update the UI
+            }
+            else if (purchase.getSku().equals(IAP_SKU4)) {
+                functionsLayout3.setVisibility(View.GONE);
+                editor = settings.edit();
+                notes = notes + 10;
+                editor.putInt("notes", notes);
+                lnTextView.setText(""+lnote+ " "+ getString(R.string.of) +" "+ notes);
                 editor.commit();
                 // consume the gas and update the UI
             }
@@ -464,32 +480,43 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         // TODO Auto-generated method stub
 
         if (v == noAdsButton){
-            if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
-                mHelper.flagEndAsync();
-                mHelper.launchPurchaseFlow(this, IAP_SKU, 10001,
-                        mPurchaseFinishedListener, "IAP");
-            }
+                if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
+                    mHelper.flagEndAsync();
+                    mHelper.launchPurchaseFlow(this, IAP_SKU, 10001,
+                            mPurchaseFinishedListener, "IAP");
+                }
+                if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
+                    mHelper.flagEndAsync();
+                    mHelper.launchPurchaseFlow(this, IAP_SKU, 10001,
+                            mPurchaseFinishedListener, "IAP4");
+                }
+
+
         }
 
         if (v == functionsButton){
-            if (!functions){
                 if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()) {
                     mHelper.flagEndAsync();
                     mHelper.launchPurchaseFlow(this, IAP_SKU2, 10001,
                             mPurchaseFinishedListener, "IAP2");
                 }
-            }else {
-                if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
-                    mHelper.flagEndAsync();
-                    mHelper.launchPurchaseFlow(this, IAP_SKU3, 10001,
-                            mPurchaseFinishedListener, "IAP3");
-                }
-
-
-            }
-
         }
 
+        if (v == functionsButton2){
+            if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
+                mHelper.flagEndAsync();
+                mHelper.launchPurchaseFlow(this, IAP_SKU3, 10001,
+                        mPurchaseFinishedListener, "IAP3");
+            }
+        }
+
+        if (v == functionsButton3){
+            if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
+                mHelper.flagEndAsync();
+                mHelper.launchPurchaseFlow(this, IAP_SKU4, 10001,
+                        mPurchaseFinishedListener, "IAP4");
+            }
+        }
         jetzt = System.currentTimeMillis();
         if (jetzt >= (letzteWerbung+1200000)){
             if (lz >= 50){
