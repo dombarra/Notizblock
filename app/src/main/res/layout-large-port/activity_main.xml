@@ -21,52 +21,53 @@
         tools:ignore="UselessParent">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/optionsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                ads:srcCompat="@drawable/optionsbutton_selected"
-                android:id="@+id/optionsButton"
                 android:layout_weight="1"
+                ads:srcCompat="@drawable/optionsbutton_selected"
                 tools:ignore="ContentDescription" />
 
             <Button
-                android:text="@string/clear"
+                android:id="@+id/clearButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/clearButton"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="@string/clear" />
 
             <ImageButton
+                android:id="@+id/textkleinerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                ads:srcCompat="@drawable/textkleiner"
-                android:id="@+id/textkleinerButton"
                 android:layout_weight="1"
+                ads:srcCompat="@drawable/textkleiner"
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:text="10"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 android:id="@+id/textsSizeView"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:gravity="center"
+                android:lines="1"
+                android:text="10"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
-                android:textSize="24sp"
+                android:textSize="36sp"
                 tools:ignore="HardcodedText" />
 
             <ImageButton
+                android:id="@+id/textgroesserButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                ads:srcCompat="@drawable/textgroesser"
-                android:id="@+id/textgroesserButton"
                 android:layout_weight="1"
+                ads:srcCompat="@drawable/textgroesser"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
 
@@ -86,18 +87,18 @@
             android:id="@+id/noteLayout">
 
             <EditText
+                android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/editText"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="55dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:ems="10"
                 android:gravity="top|left"
-                tools:ignore="RtlHardcoded"
-                android:textColor="@android:color/black" />
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
     </LinearLayout>

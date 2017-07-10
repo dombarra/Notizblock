@@ -7,4 +7,9 @@
     <string name="options">možnosti:</string>
     <string name="textsize">Cilag:</string>
     <string name="banner_ad_unit_id">ca-app-pub-8124355001128596/3339556799</string>
+    <string name="moreNote">Získejte ještě jednu poznámku</string>
+    <string name="moreNoteText">Sledujte tuto videoreklamu a obdržíte ještě jednu poznámku.</string>
+    <string name="moreNoteTextSucces">Děkujeme za sledování této videoreklamy. Nyní můžete použít ještě jednu poznámku.</string>
+    <string name="moreNoteTextVideoAdClosed">Videoreklamu jste uzavřeli. Nebudete mít ještě jednu poznámku.</string>
+    <string name="moreNoteTextdLeftApplication">Zanechali jste aplikaci při sledování videa. Nebudete mít ještě jednu poznámku.</string>
 </resources>

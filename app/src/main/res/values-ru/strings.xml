@@ -7,4 +7,9 @@
     <string name="options">опции:</string>
     <string name="textsize">размер шрифта:</string>
     <string name="banner_ad_unit_id">ca-app-pub-8124355001128596/3339556799</string>
+    <string name="moreNote">Получите еще 1 заметку</string>
+    <string name="moreNoteText">Посмотрите это видео, и вы получите еще одно примечание.</string>
+    <string name="moreNoteTextSucces">Спасибо за просмотр этого видеообъявления. Теперь вы можете использовать еще одно примечание.</string>
+    <string name="moreNoteTextVideoAdClosed">Вы закрыли видеообъявление. Вы не получите еще одну заметку.</string>
+    <string name="moreNoteTextdLeftApplication">Вы покинули апелляцию, наблюдая за добавлением видео. Вы не получите еще одну заметку.</string>
 </resources>

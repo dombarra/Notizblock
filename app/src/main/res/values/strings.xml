@@ -6,4 +6,9 @@
     <string name="textsize">Textsize:</string>
     <string name="leftnote">Note:</string>
     <string name="of">of</string>
+    <string name="moreNote">Get 1 more note</string>
+    <string name="moreNoteTextSucces">Thanks for watching this video ad. You now can use one more note.</string>
+    <string name="moreNoteTextdLeftApplication">You left the aaplication while watching the video add. You will not get one more note.</string>
+    <string name="moreNoteTextVideoAdClosed">You closed the video ad. You will not get one more note.</string>
+    <string name="moreNoteText">Watch a video ad and you will get one more note.</string>
 </resources>

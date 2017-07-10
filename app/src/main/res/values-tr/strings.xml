@@ -7,4 +7,9 @@
     <string name="options">Seçenekler:</string>
     <string name="textsize">yazı Boyutu:</string>
     <string name="banner_ad_unit_id">ca-app-pub-8124355001128596/3339556799</string>
+    <string name="moreNote">1 not daha al</string>
+    <string name="moreNoteText">Bu video reklamı izleyin ve bir not daha alacaksınız.</string>
+    <string name="moreNoteTextSucces">Bu video reklamı izlediğiniz için teşekkür ederiz. Şimdi bir not daha kullanabilirsiniz.</string>
+    <string name="moreNoteTextVideoAdClosed">Video reklamı kapattın. Bir not daha alamazsın.</string>
+    <string name="moreNoteTextdLeftApplication">Video eklentisini izlerken aaplication\'ı terk ettiniz. Bir not daha alamazsın.</string>
 </resources>

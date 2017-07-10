@@ -15,12 +15,18 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -29,10 +35,11 @@ import inappbilling.util.IabResult;
 import inappbilling.util.Inventory;
 import inappbilling.util.Purchase;
 
-public class OptionsActivity extends AppCompatActivity implements View.OnClickListener {
-
-    Button textsizeplusButton, textsizeminusButton, lnplusButton,lnminusButton,noAdsButton,functionsButton,functionsButton2,functionsButton3;
-    TextView textsizeTextView, lnTextView, noAdsText, functionsText, functionsText2, functionsText3;
+public class OptionsActivity extends AppCompatActivity implements View.OnClickListener, RewardedVideoAdListener {
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private RewardedVideoAd mAd;
+    Button textsizeplusButton, textsizeminusButton, lnplusButton,lnminusButton,noAdsButton,functionsButton,functionsButton2,functionsButton3, moreNotesButton;
+    TextView textsizeTextView, lnTextView, noAdsText, functionsText, functionsText2, functionsText3, moreNotesText;
     ImageButton back;
     Intent i = new Intent();
     float textsize = 25;
@@ -47,11 +54,10 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
     int lz;
     long letzteWerbung, jetzt;
     private AdView adView;
-    LinearLayout layout, noAdsLayout,functionsLayout, functionsLayout2,functionsLayout3;
+    LinearLayout layout, noAdsLayout,functionsLayout, functionsLayout2,functionsLayout3, moreNotesLayout;
     private static final String MY_BANNER_UNIT_ID = "ca-app-pub-8124355001128596/3339556799";
     private static final String MY_INTERSTITIAL_UNIT_ID = "ca-app-pub-8124355001128596/1403745594";
     private InterstitialAd interstitial;
-    AdRequest adRequest;
 
     Boolean noAds= false;
     Boolean functions = false;
@@ -144,6 +150,8 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putInt("notes", notes);
                     editor.commit();
                     functionsLayout.setVisibility(View.GONE);
+                    functionsLayout2.setVisibility(View.VISIBLE);
+                    functionsLayout3.setVisibility(View.VISIBLE);
 
                 }
                 if (!IAPgekauft2){
@@ -153,7 +161,9 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putInt("notes", notes);
                     editor.putBoolean("functions", functions);
                     editor.commit();
-                    functionsLayout.setVisibility(View.GONE);
+                    functionsLayout2.setVisibility(View.GONE);
+                    functionsLayout3.setVisibility(View.GONE);
+                    functionsLayout.setVisibility(View.VISIBLE);
                 }
 
                 inventory.getPurchase(IAP_SKU3);
@@ -169,6 +179,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putBoolean("unlimitedNotes", unlimitedNotes);
                     editor.commit();
                     functionsLayout2.setVisibility(View.GONE);
+                    functionsLayout3.setVisibility(View.GONE);
                 }
                 if (!IAPgekauft3){
                     editor = settings.edit();
@@ -177,10 +188,31 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                     editor.commit();
                     functionsLayout.setVisibility(View.VISIBLE);
                 }
+
+                inventory.getPurchase(IAP_SKU4);
+                Boolean IAPgekauft4 = inventory.hasPurchase(IAP_SKU4);
+
+                if (IAPgekauft4){
+                    mHelper.consumeAsync(inventory.getPurchase(IAP_SKU4),
+                            mConsumeFinishedListener);
+                }
                 // update UI accordingly
             }
         }
     };
+
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
+            new IabHelper.OnConsumeFinishedListener() {
+                public void onConsumeFinished(Purchase purchase, IabResult result) {
+                    if (result.isSuccess()) {
+                        // provision the in-app purchase to the user
+                        // (for example, credit 50 gold coins to player's character)
+                    }
+                    else {
+                        // handle error
+                    }
+                }
+            };
 
     IabHelper.QueryInventoryFinishedListener
             mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
@@ -252,11 +284,19 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         }
     };
 
+    private void loadRewardedVideoAd() {
+        mAd.loadAd("ca-app-pub-8124355001128596/6382805990", new AdRequest.Builder().build());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
+
+
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        loadRewardedVideoAd();
 
         Intent serviceIntent =
                 new Intent("com.android.vending.billing.InAppBillingService.BIND");
@@ -272,7 +312,10 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
 
         noAdsLayout = (LinearLayout) findViewById(R.id.noAdsLayout);
         functionsLayout = (LinearLayout) findViewById(R.id.functionsLayout);
-
+        functionsLayout2 = (LinearLayout) findViewById(R.id.functionsLayout2);
+        functionsLayout3 = (LinearLayout) findViewById(R.id.functionsLayout3);
+        moreNotesLayout = (LinearLayout) findViewById(R.id.moreNotesLayout);
+        moreNotesLayout.setVisibility(View.GONE);
         // Create the adView.
         adView = new AdView(this);
         adView.setAdUnitId(MY_BANNER_UNIT_ID);
@@ -301,12 +344,15 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         functionsButton3 = (Button)findViewById(R.id.functionsButton3);
         functionsButton3.setOnClickListener(this);
         functionsButton3.setVisibility(View.GONE);
+        moreNotesButton = (Button) findViewById(R.id.moreNotesButton);
+        moreNotesButton.setOnClickListener(this);
+        moreNotesText = (TextView)findViewById(R.id.moreNotesText);
 
-        unlimitedNotes = settings.getBoolean("unlimitedNotes", unlimitedNotes);
+
+        //unlimitedNotes = settings.getBoolean("unlimitedNotes", unlimitedNotes);
 
 
-        if (noAds){}
-        else{
+        if (!noAds) {
             layout.addView(adView);
 
             // Initiate a generic request.
@@ -329,7 +375,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                         // Oh noes, there was a problem.
                         Log.d(TAG, "Problem setting up In-app Billing: " + result);
                     }
-                    ArrayList<String> additionalSkuList = new ArrayList<String>();
+                    ArrayList<String> additionalSkuList = new ArrayList<>();
                     additionalSkuList.add(IAP_SKU);
                     additionalSkuList.add(IAP_SKU2);
                     additionalSkuList.add(IAP_SKU3);
@@ -477,7 +523,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
+
 
         if (v == noAdsButton){
                 if (mHelper.isSetupDone() && !mHelper.isAsyncInProgress()){
@@ -517,10 +563,15 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
                         mPurchaseFinishedListener, "IAP4");
             }
         }
+        if (v == moreNotesButton){
+            if (mAd.isLoaded()) {
+                mAd.show();
+            }
+        }
         jetzt = System.currentTimeMillis();
         if (jetzt >= (letzteWerbung+1200000)){
             if (lz >= 50){
-                if (noAds==false){
+                if (!noAds){
                     displayInterstitial();
                 }
                 lz=0;
@@ -602,7 +653,7 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
         if (mHelper != null){
             mHelper.dispose();
         }
-
+        mAd.destroy(this);
 
     }
 
@@ -628,8 +679,60 @@ public class OptionsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        mAd.resume(this);
+    }
+    @Override
+    public void onPause() {
+        mAd.pause(this);
+        super.onPause();
+    }
+    // Required to reward the user.
+    @Override
+    public void onRewarded(RewardItem reward) {
+        moreNotesLayout.setVisibility(View.GONE);
+        loadRewardedVideoAd();
+        editor = settings.edit();
+        notes = notes + 1;
+        editor.putInt("notes", notes);
+        lnTextView.setText(""+lnote+ " "+ getString(R.string.of) +" "+ notes);
+        editor.apply();
+        Toast.makeText(this, getResources().getString(R.string.moreNoteTextSucces), Toast.LENGTH_SHORT).show();
+        // Reward the user.
+    }
+
+    // The following listener methods are optional.
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+        Toast.makeText(this, getResources().getString(R.string.moreNoteTextdLeftApplication),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        Toast.makeText(this, getResources().getString(R.string.moreNoteTextVideoAdClosed), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
 
     }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+       moreNotesLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+
 }
 
 

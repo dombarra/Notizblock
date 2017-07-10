@@ -7,4 +7,9 @@
     <string name="options">Einstellungen:</string>
     <string name="textsize">Textgröße:</string>
     <string name="banner_ad_unit_id">ca-app-pub-8124355001128596/3339556799</string>
+    <string name="moreNote">Erhalte eine weitere Notiz</string>
+    <string name="moreNoteText">Schau dir eine Video Werbung und und Du erhälst eine weitere Notiz.</string>
+    <string name="moreNoteTextSucces">Vielen Dank, dass Du diese Videoanzeige angeschaut hast. Du kannst nun eine weitere Notiz speichern. ;)</string>
+    <string name="moreNoteTextVideoAdClosed">Du hast die Video Anzeige vor dem Ende beendet. Deshalb erhälst du keine weitere Notiz.</string>
+    <string name="moreNoteTextdLeftApplication">Du hast die App vor Beendigung der Video Anzeige verlassen und erhälst deshalb keine weitere Notiz.</string>
 </resources>

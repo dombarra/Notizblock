@@ -7,4 +7,9 @@
     <string name="options">Opções:</string>
     <string name="textsize">Tamanho do texto:</string>
     <string name="banner_ad_unit_id">ca-app-pub-8124355001128596/3339556799</string>
+    <string name="moreNote">Obter mais 1 nota</string>
+    <string name="moreNoteText">Assista a este anúncio em vídeo e você receberá mais uma nota.</string>
+    <string name="moreNoteTextSucces">Obrigado por assistir este anúncio de vídeo. Agora você pode usar mais uma nota.</string>
+    <string name="moreNoteTextVideoAdClosed">Você fechou o anúncio em vídeo. Você não receberá mais uma nota.</string>
+    <string name="moreNoteTextdLeftApplication">Você deixou a aplicação enquanto observa o vídeo adicionar. Você não receberá mais uma nota.</string>
 </resources>

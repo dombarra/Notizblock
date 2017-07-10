@@ -27,7 +27,6 @@ import static com.google.firebase.analytics.FirebaseAnalytics.getInstance;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, RewardedVideoAdListener {
     private FirebaseAnalytics mFirebaseAnalytics;
-    private AdView mAdView;
     private RewardedVideoAd mAd;
 
     public static final String PREFS_NAME = "MyPrefsFile";
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String text;
     int Hintergrund;
     LinearLayout haupt;
-    int lz,tg;
+    int lz;
     int VideoWerbung = 0;
     long letzteWerbung, jetzt;
     ImageButton optionsButton, textminusbutton,textplusbutton;
@@ -50,11 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Boolean noAds= false;
     Boolean functions = false;
     private AdView adView;
-    LinearLayout layout,adLayout;
+    LinearLayout adLayout;
     private static final String MY_BANNER_UNIT_ID = "ca-app-pub-8124355001128596/3339556799";
     private static final String MY_INTERSTITIAL_UNIT_ID = "ca-app-pub-8124355001128596/1403745594";
     private InterstitialAd interstitial;
-    AdRequest adRequest;
 
 
     InputMethodManager imm;
@@ -175,12 +173,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onRewardedVideoStarted() {
 
-    }
-
-
-    public int textg(float a){
-        int b = (int)a;
-        return b;
     }
 
     @Override
